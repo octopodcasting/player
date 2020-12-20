@@ -1,0 +1,23 @@
+{
+  "name": "@octopodcasting/player",
+  "version": "0.1.0",
+  "description": "A web component for playing podcasts",
+  "author": "Tim Goudriaan",
+  "license": "MIT",
+  "main": "distribution/bundle.js",
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "babel-loader": "^8.2.2",
+    "core-js": "^3.6.5",
+    "raw-loader": "^4.0.2",
+    "svg-inline-loader": "^0.8.2",
+    "webpack": "^4.44.0",
+    "webpack-cli": "^3.3.12"
+  },
+  "scripts": {
+    "build": "webpack --mode development",
+    "watch": "webpack --mode development --watch",
+    "production": "webpack --mode production"
+  }
+}

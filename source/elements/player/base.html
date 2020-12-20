@@ -1,0 +1,220 @@
+<style type="text/css">
+  :host {
+    --spacing: calc(10px);
+    padding: var(--spacing);
+    border-radius: 10px;
+    background: #f1f3f4;
+    color: #000000;
+  }
+
+  .buttons {
+    display: flex;
+    overflow: hidden;
+  }
+
+  .button,
+  .button.speed .option,
+  .button.volume .mute {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2em;
+    height: 2.2em;
+    border: 0;
+    border-radius: 1.1em;
+    background: #f1f3f4;
+    font-size: 1em;
+    line-height: 2.2em;
+    outline: 0;
+    transition: all .3s linear;
+  }
+
+  .button:hover,
+  .button.speed .option:hover,
+  .button.volume .mute:hover {
+    cursor: pointer;
+  }
+
+  a.button {
+    color: #000000;
+  }
+
+  .button.invisible {
+    flex-shrink: 2;
+    background: #f1f3f4 !important;
+    cursor: default !important;
+  }
+
+  .button:hover {
+    background: #e5e7e8;
+  }
+
+  .button svg {
+    height: 1em;
+  }
+
+  .button.rewind svg {
+    transform: rotate(45deg) scaleX(-1);
+  }
+
+  .button.skip svg {
+    transform: rotate(-45deg);
+  }
+
+  .button.speed:hover {
+    width: calc(2.2em * 5);
+  }
+
+  .button.speed .option {
+    opacity: 0;
+    overflow: hidden;
+    width: 0;
+    padding: 0;
+  }
+
+  .button.speed .option small {
+    font-size: .8em;
+  }
+
+  .button.speed .option.active {
+    opacity: 1;
+    width: 2.2em;
+  }
+
+  .button.speed:hover .option {
+    opacity: 1;
+    width: 2.2em;
+    background: #e5e7e8;
+  }
+
+  .button.speed:hover .option:not(.active) {
+    animation: showSpeedOption .3s linear;
+  }
+
+  .button.speed:hover .option:hover {
+    font-weight: bold;
+  }
+
+  .button.volume {
+    display: flex;
+    align-items: center;
+    transition: all .3s linear;
+  }
+
+  .button.volume:hover {
+    width: calc(3.8em + 2.2em + 1.1em + .2em);
+  }
+
+  .button.volume:hover .mute {
+    background: #e5e7e8;
+  }
+
+  .button.volume .progress {
+    opacity: 0;
+    width: 0;
+    margin-bottom: 0;
+    transition: all .3s linear;
+  }
+
+  .button.volume .progress-indicator {
+    left: calc(100% - 6px);
+  }
+
+  .button.volume .progress-played {
+    width: 100%;
+  }
+
+  .button.volume:not(:hover) .progress-indicator {
+    width: 0 !important;
+  }
+
+  .button.volume:not(:hover) .progress-played {
+    width: 0 !important;
+  }
+
+  .button.volume:hover .progress {
+    opacity: 1;
+    width: 3.8em;
+    margin-left: 1.1em;
+    margin-right: .2em;
+  }
+
+  .control-button-group {
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+  }
+
+  .progress {
+    display: flex;
+    align-items: center;
+    height: 12px;
+    margin-bottom: var(--spacing);
+    cursor: pointer;
+  }
+
+  .progress-bar {
+    position: relative;
+    width: 100%;
+    height: 5px;
+    background: #c1c2c3;
+    border-radius: 3px;
+    z-index: 0;
+  }
+
+  .progress-played {
+    position: absolute;
+    height: 100%;
+    background-color: #000000;
+    border-radius: 3px;
+    z-index: 2;
+  }
+
+  .progress-indicator {
+    opacity: 0;
+    position: absolute;
+    top: -4px;
+    left: 6px;
+    width: 12px;
+    height: 12px;
+    margin-left: -6px;
+    background: #000000;
+    border-radius: 6px;
+    box-shadow: rgba(134,134,134,0.5) 0 0 1px;
+    z-index: 3;
+    transition: opacity .3s linear;
+  }
+
+  .progress:hover .progress-indicator {
+    opacity: 1;
+  }
+
+  .timestamps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+
+  @keyframes showSpeedOption {
+    0% {
+      opacity: 0;
+      width: 0;
+    }
+    99% {
+      opacity: 0;
+      width: 2.2em;
+    }
+    100% {
+      opacity: 1;
+      width: 2.2em;
+    }
+  }
+</style>
