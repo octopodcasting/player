@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/octopodcasting/player.git"
   },
-  "main": "distribution/bundle.js",
+  "main": "distribution/octopod-player.js",
   "files": [],
   "scripts": {
     "production": "webpack --mode production",

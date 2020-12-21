@@ -4,7 +4,7 @@ module.exports = {
   entry: './source/index.js',
   output: {
     path: path.resolve(__dirname, 'distribution'),
-    filename: 'bundle.js',
+    filename: 'octopod-player.js',
   },
   module: {
     rules: [
