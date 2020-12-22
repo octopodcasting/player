@@ -6,15 +6,17 @@ import audioPlayerDom from './player/audio-player.html';
 import baseDom from './player/base.html';
 import controlsDom from './player/controls-dom.js';
 import coverPlayerDom from './player/cover-player.html';
+import MediaWrapperElement from './player/media-wrapper';
 
-class OctopodPlayerElement extends HTMLElement {
+const BaseElement = MediaWrapperElement(HTMLElement);
+
+class OctopodPlayerElement extends BaseElement {
   constructor() {
     super();
 
     this.shadowDom = this.attachShadow({mode: 'closed'});
 
     this.cover = null;
-    this.mediaPlayer = null;
   }
 
   get chaptersUrl() {
@@ -23,14 +25,6 @@ class OctopodPlayerElement extends HTMLElement {
 
   set chaptersUrl(url) {
     this.setAttribute('chapters', url);
-  }
-
-  get currentTime() {
-    return this.mediaPlayer?.currentTime ?? 0;
-  }
-
-  set currentTime(timestamp) {
-    this.mediaPlayer.currentTime = timestamp;
   }
 
   get mode() {
@@ -45,36 +39,12 @@ class OctopodPlayerElement extends HTMLElement {
     return this.setAttribute('mode', mode);
   }
 
-  get duration() {
-    return this.mediaPlayer?.duration ?? 0;
-  }
-
   get imageUrl() {
     return this.getAttribute('image');
   }
 
   set imageUrl(url) {
     this.setAttribute('image', url);
-  }
-
-  get paused() {
-    return this.mediaPlayer?.paused ?? true;
-  }
-
-  get playbackRate() {
-    return this.mediaPlayer?.playbackRate ?? 1;
-  }
-
-  set playbackRate(rate) {
-    this.mediaPlayer.playbackRate = rate;
-  }
-
-  get volume() {
-    return this.mediaPlayer?.volume ?? 1;
-  }
-
-  set volume(level) {
-    this.mediaPlayer.volume = level;
   }
 
   connectedCallback() {
@@ -122,11 +92,11 @@ class OctopodPlayerElement extends HTMLElement {
       this.mediaPlayer = document.createElement('audio');
       this.mediaPlayer.src = this.getAttribute('src');
 
-      this.mediaPlayer.addEventListener('loadedmetadata', () => {
+      this.addEventListener('durationchange', () => {
         select('.timestamp-duration').innerHTML = formatTime(this.duration);
       });
 
-      this.mediaPlayer.addEventListener('timeupdate', () => {
+      this.addEventListener('timeupdate', () => {
         this.cover.currentTime = this.currentTime;
         select('.timestamp-current').innerHTML = formatTime(this.currentTime);
 
@@ -148,7 +118,7 @@ class OctopodPlayerElement extends HTMLElement {
         select('.progress-played').style.width = playedValue;
       });
 
-      this.mediaPlayer.addEventListener('volumechange', () => {
+      this.addEventListener('volumechange', () => {
         const rect = volumeContainer.getBoundingClientRect();
         const indicatorRect = volumeIndicator.getBoundingClientRect();
 
@@ -169,8 +139,8 @@ class OctopodPlayerElement extends HTMLElement {
       const playPauseListener = () => {
         playButton.innerHTML = this.playButtonSvg();
       };
-      this.mediaPlayer.addEventListener('play', playPauseListener);
-      this.mediaPlayer.addEventListener('pause', playPauseListener);
+      this.addEventListener('play', playPauseListener);
+      this.addEventListener('pause', playPauseListener);
     }
 
     this.shadowDom.appendChild(this.mediaPlayer);
