@@ -66,6 +66,18 @@ const MediaWrapperElement = function (BaseElement) {
       }
     }
 
+    play() {
+      if (this.#internalPlayer) {
+        this.#internalPlayer.play();
+      }
+    }
+
+    pause() {
+      if (this.#internalPlayer) {
+        this.#internalPlayer.pause();
+      }
+    }
+
     #initializeMediaPlayerListeners() {
       mediaEvents.forEach(eventName => {
         this.#internalPlayer.addEventListener(eventName, this.#mediaPlayerListener);
