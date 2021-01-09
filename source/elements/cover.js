@@ -11,7 +11,8 @@ function vector(x, y) {
 const OctopodCoverElement = function (BaseElement) {
   return class extends BaseElement {
     #coverImageUrl = null;
-    #imageCache = [];
+    #currentImageUrl = null;
+    #imageCache = {};
 
     #shadowDom = null;
 
@@ -20,6 +21,13 @@ const OctopodCoverElement = function (BaseElement) {
     #resizeObserver = null;
 
     #chapterUpdateListener = null;
+
+    static get observedAttributes() {
+      return [
+        'chapters',
+        'image',
+      ];
+    }
 
     constructor() {
       super();
@@ -36,10 +44,6 @@ const OctopodCoverElement = function (BaseElement) {
         this.#resizeObserver.observe(this);
 
         this.#renderShadowDom();
-
-        if (this.imageUrl) {
-          this.attributeChangedCallback('image', null, this.imageUrl);
-        }
       });
 
       this.addAttributeChangedCallback('image', (oldValue, newValue) => {
@@ -70,7 +74,11 @@ const OctopodCoverElement = function (BaseElement) {
         image.addEventListener('load', () => {
           this.#imageCache[src] = image;
 
-          resolve(image);
+          if (this.#currentImageUrl === src) {
+            resolve(image);
+          } else {
+            resolve(null);
+          }
         });
 
         image.src = src;
@@ -78,10 +86,18 @@ const OctopodCoverElement = function (BaseElement) {
     }
 
     #drawImage(src) {
+      if (this.#currentImageUrl === src) {
+        return;
+      }
+
       this.#showPlaceholder();
 
+      this.#currentImageUrl = src;
+
       this.#loadImage(src).then(image => {
-        this.#doDrawImage(image);
+        if (image) {
+          this.#doDrawImage(image);
+        }
       });
     }
 
@@ -189,17 +205,17 @@ const OctopodCoverElement = function (BaseElement) {
             width: 360px;
             background: #f1f3f4;
           }
-  
+
           .container, .reference {
             position: relative;
             width: 100%;
             height: 100%;
           }
-  
+
           .reference {
             z-index: -1;
           }
-  
+
           .placeholder, canvas {
             position: absolute;
             top: 0;
@@ -210,11 +226,11 @@ const OctopodCoverElement = function (BaseElement) {
             width: 100%;
             height: 100%;
           }
-  
+
           .placeholder.hide {
             display: none;
           }
-  
+
           .placeholder svg {
             margin: 25% 28%;
             color: #000000;

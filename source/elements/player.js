@@ -15,6 +15,8 @@ const OctopodPlayerElement = function (BaseElement) {
 
     static get observedAttributes() {
       return [
+        'chapters',
+        'image',
         'mode',
         'src',
       ];
@@ -31,6 +33,12 @@ const OctopodPlayerElement = function (BaseElement) {
         }
 
         this.#renderShadowDom();
+      });
+
+      this.addAttributeChangedCallback('image', (oldValue, newValue) => {
+        if (this.#cover) {
+          this.#cover.imageUrl = newValue;
+        }
       });
 
       this.addAttributeChangedCallback('mode', (oldValue, newValue) => {

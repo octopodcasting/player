@@ -4,6 +4,7 @@ const ChaptersElement = function (BaseElement) {
 
     #internalChapters = null;
     #currentChapterIndex = null;
+    #currentChaptersUrl = null;
     #fetching = false;
 
     #timeUpdateListener = null;
@@ -12,12 +13,6 @@ const ChaptersElement = function (BaseElement) {
       super();
 
       this.#timeUpdateListener = this.#timeUpdateCallback.bind(this);
-
-      this.addConnectedCallback(() => {
-        if (this.chaptersUrl && !this.#internalChapters && !this.#fetching) {
-          this.#fetchChapters(this.chaptersUrl);
-        }
-      });
 
       this.addAttributeChangedCallback('chapters', (oldValue, newValue) => {
         if (!newValue) {
@@ -54,6 +49,12 @@ const ChaptersElement = function (BaseElement) {
       if (type && type !== 'application/json+chapters') {
         console.error(`Unknown chapters format: ${type}`);
       }
+
+      if (url === this.#currentChaptersUrl) {
+        return;
+      }
+
+      this.#currentChaptersUrl = url;
 
       if (this.#fetching) {
         this.#abortController.abort();
