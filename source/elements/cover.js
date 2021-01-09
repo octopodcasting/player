@@ -49,7 +49,9 @@ const OctopodCoverElement = function (BaseElement) {
       this.addAttributeChangedCallback('image', (oldValue, newValue) => {
         this.#coverImageUrl = newValue;
 
-        this.#redraw();
+        if (this.#canvas) {
+          this.#redraw();
+        }
       });
 
       this.addEventListener('chapterupdate', this.#chapterUpdateListener);
