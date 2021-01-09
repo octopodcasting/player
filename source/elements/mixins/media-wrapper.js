@@ -9,6 +9,19 @@ const MediaWrapperElement = function (BaseElement) {
     constructor() {
       super();
 
+      this.addConnectedCallback(() => {
+        if (!this.mediaPlayer) {
+          this.mediaPlayer = document.createElement('audio');
+          this.mediaPlayer.src = this.src;
+        }
+      });
+
+      this.addAttributeChangedCallback('src', (oldValue, newValue) => {
+        if (this.mediaPlayer) {
+          this.mediaPlayer.src = newValue;
+        }
+      });
+
       this.#mediaPlayerListener = this.#mediaPlayerListenerCallback.bind(this);
     }
 
@@ -26,6 +39,14 @@ const MediaWrapperElement = function (BaseElement) {
 
         this.#initializeMediaPlayerListeners();
       }
+    }
+
+    get src() {
+      return this.getAttribute('src') ?? null;
+    }
+
+    set src(src) {
+      return this.setAttribute('src', src);
     }
 
     get currentTime() {

@@ -1,7 +1,7 @@
 const CompositeElement = function (BaseElement) {
   return class extends BaseElement {
     #adoptedCallbacks = [];
-    #attributeChangedCallbacks = [];
+    #attributeChangedCallbacks = {};
     #connectedCallbacks = [];
     #disconnectedCallbacks = [];
 

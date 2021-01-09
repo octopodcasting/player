@@ -13,6 +13,13 @@ const OctopodPlayerElement = function (BaseElement) {
 
     #cover = null;
 
+    static get observedAttributes() {
+      return [
+        'mode',
+        'src',
+      ];
+    }
+
     constructor() {
       super();
 
@@ -23,9 +30,12 @@ const OctopodPlayerElement = function (BaseElement) {
           this.setAttribute('tabindex', '0');
         }
 
-        if (!this.mediaPlayer) {
-          this.mediaPlayer = document.createElement('audio');
-          this.mediaPlayer.src = this.getAttribute('src');
+        this.#renderShadowDom();
+      });
+
+      this.addAttributeChangedCallback('mode', (oldValue, newValue) => {
+        if (!['audio', 'cover'].includes(newValue)) {
+          throw new Error(`Invalid display mode: ${newValue}`);
         }
 
         this.#renderShadowDom();
@@ -37,10 +47,6 @@ const OctopodPlayerElement = function (BaseElement) {
     }
 
     set mode(mode) {
-      if (!['audio', 'cover'].includes(mode)) {
-        console.error(`Invalid display mode: ${mode}`);
-      }
-
       return this.setAttribute('mode', mode);
     }
 
