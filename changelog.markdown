@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1 (2021-01-10)
+
+Bug fix release.
+
+- Fixes size of buttons on iOS devices.
+- Removes a defunct animation when changing playback speed.
+- Fixes independent cover elements not updating chapters correctly.
+
 ## 0.2.0 (2021-01-09)
 
 Maintenance release with JS mixin classes.
