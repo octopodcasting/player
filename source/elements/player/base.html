@@ -89,10 +89,6 @@
     background: #e5e7e8;
   }
 
-  .button.speed:hover .option:not(.active) {
-    animation: showSpeedOption .3s linear;
-  }
-
   .button.speed:hover .option:hover {
     font-weight: bold;
   }
@@ -202,20 +198,5 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
-  }
-
-  @keyframes showSpeedOption {
-    0% {
-      opacity: 0;
-      width: 0;
-    }
-    99% {
-      opacity: 0;
-      width: 2.2em;
-    }
-    100% {
-      opacity: 1;
-      width: 2.2em;
-    }
   }
 </style>
