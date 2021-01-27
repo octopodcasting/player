@@ -7,7 +7,7 @@ import audioPlayerDom from './player/audio-player.html';
 import baseDom from './player/base.html';
 import coverPlayerDom from './player/cover-player.html';
 
-const OctopodPlayerElement = function (BaseElement) {
+const OctopodPlayerElement = function (BaseElement, composite) {
   return class extends BaseElement {
     #shadowDom = null;
 
@@ -27,7 +27,7 @@ const OctopodPlayerElement = function (BaseElement) {
 
       this.#shadowDom = this.attachShadow({mode: 'closed'});
 
-      this.addConnectedCallback(() => {
+      composite.addConnectedCallback(() => {
         if (!this.hasAttribute('tabindex')) {
           this.setAttribute('tabindex', '0');
         }
@@ -35,13 +35,13 @@ const OctopodPlayerElement = function (BaseElement) {
         this.#renderShadowDom();
       });
 
-      this.addAttributeChangedCallback('image', (oldValue, newValue) => {
+      composite.addAttributeChangedCallback('image', (oldValue, newValue) => {
         if (this.#cover) {
           this.#cover.imageUrl = newValue;
         }
       });
 
-      this.addAttributeChangedCallback('mode', (oldValue, newValue) => {
+      composite.addAttributeChangedCallback('mode', (oldValue, newValue) => {
         if (!['audio', 'cover'].includes(newValue)) {
           throw new Error(`Invalid display mode: ${newValue}`);
         }

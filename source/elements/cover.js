@@ -8,7 +8,7 @@ function vector(x, y) {
   return {x, y};
 }
 
-const OctopodCoverElement = function (BaseElement) {
+const OctopodCoverElement = function (BaseElement, composite) {
   return class extends BaseElement {
     #coverImageUrl = null;
     #currentImageUrl = null;
@@ -36,7 +36,7 @@ const OctopodCoverElement = function (BaseElement) {
 
       this.#chapterUpdateListener = () => this.#redraw();
 
-      this.addConnectedCallback(() => {
+      composite.addConnectedCallback(() => {
         this.#canvas = document.createElement('canvas');
         this.#canvasContext = this.#canvas.getContext('2d');
 
@@ -46,7 +46,7 @@ const OctopodCoverElement = function (BaseElement) {
         this.#renderShadowDom();
       });
 
-      this.addAttributeChangedCallback('image', (oldValue, newValue) => {
+      composite.addAttributeChangedCallback('image', (oldValue, newValue) => {
         this.#coverImageUrl = newValue;
 
         if (this.#canvas) {

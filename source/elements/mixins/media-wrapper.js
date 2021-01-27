@@ -1,6 +1,6 @@
 import {mediaEvents} from '../../utilities/media';
 
-const MediaWrapperElement = function (BaseElement) {
+const MediaWrapperElement = function (BaseElement, composite) {
   return class extends BaseElement {
     #internalPlayer = null;
 
@@ -9,14 +9,14 @@ const MediaWrapperElement = function (BaseElement) {
     constructor() {
       super();
 
-      this.addConnectedCallback(() => {
+      composite.addConnectedCallback(() => {
         if (!this.mediaPlayer) {
           this.mediaPlayer = document.createElement('audio');
           this.mediaPlayer.src = this.src;
         }
       });
 
-      this.addAttributeChangedCallback('src', (oldValue, newValue) => {
+      composite.addAttributeChangedCallback('src', (oldValue, newValue) => {
         if (this.mediaPlayer) {
           this.mediaPlayer.src = newValue;
         }

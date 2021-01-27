@@ -1,4 +1,4 @@
-const ChaptersElement = function (BaseElement) {
+const ChaptersElement = function (BaseElement, composite) {
   return class extends BaseElement {
     #abortController = new AbortController();
 
@@ -14,7 +14,7 @@ const ChaptersElement = function (BaseElement) {
 
       this.#timeUpdateListener = this.#timeUpdateCallback.bind(this);
 
-      this.addAttributeChangedCallback('chapters', (oldValue, newValue) => {
+      composite.addAttributeChangedCallback('chapters', (oldValue, newValue) => {
         if (!newValue) {
           this.#loadChapters(null);
         } else {
