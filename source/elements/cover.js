@@ -21,6 +21,7 @@ const OctopodCoverElement = function (BaseElement, composite) {
     #resizeObserver = null;
 
     #chapterUpdateListener = null;
+    #windowFocusListener = null;
 
     static get observedAttributes() {
       return [
@@ -35,6 +36,7 @@ const OctopodCoverElement = function (BaseElement, composite) {
       this.#shadowDom = this.attachShadow({mode: 'closed'});
 
       this.#chapterUpdateListener = () => this.#redraw();
+      this.#windowFocusListener = this.#windowFocusCallback.bind(this);
 
       composite.addConnectedCallback(() => {
         this.#canvas = document.createElement('canvas');
@@ -44,6 +46,12 @@ const OctopodCoverElement = function (BaseElement, composite) {
         this.#resizeObserver.observe(this);
 
         this.#renderShadowDom();
+
+        window.addEventListener('focus', this.#windowFocusListener);
+      });
+
+      composite.addDisconnectedCallback(() => {
+        window.removeEventListener('focus', this.#windowFocusListener);
       });
 
       composite.addAttributeChangedCallback('image', (oldValue, newValue) => {
@@ -87,8 +95,8 @@ const OctopodCoverElement = function (BaseElement, composite) {
       });
     }
 
-    #drawImage(src) {
-      if (this.#currentImageUrl === src) {
+    #drawImage(src, force = false) {
+      if (!force && this.#currentImageUrl === src) {
         return;
       }
 
@@ -146,13 +154,13 @@ const OctopodCoverElement = function (BaseElement, composite) {
       this.#shadowDom.querySelector('.placeholder').classList.remove('hide');
     }
 
-    #redraw() {
+    #redraw(force = false) {
       const chapter = this.currentChapter;
 
       if (chapter && chapter.img) {
-        this.#drawImage(chapter.img);
+        this.#drawImage(chapter.img, force);
       } else if (this.imageUrl) {
-        this.#drawImage(this.imageUrl);
+        this.#drawImage(this.imageUrl, force);
       } else {
         this.#showPlaceholder();
       }
@@ -248,6 +256,12 @@ const OctopodCoverElement = function (BaseElement, composite) {
       this.#shadowDom.querySelector('.container').appendChild(this.#canvas);
 
       this.#resize();
+    }
+
+    #windowFocusCallback() {
+      // This should draw the image if the canvas was created when the window was out of focus. Sadly, Chromium browsers
+      // still don't always render the changes to the canvas after gaining focus on the page for the first time.
+      this.#redraw(true);
     }
   };
 };
