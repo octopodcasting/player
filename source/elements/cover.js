@@ -206,52 +206,7 @@ const OctopodCoverElement = function (BaseElement, composite) {
     }
 
     #renderShadowDom() {
-      this.#shadowDom.innerHTML = `
-        <style type="text/css">
-          :host {
-            position: relative;
-            display: block;
-            overflow: hidden;
-            width: 360px;
-            background: #f1f3f4;
-          }
-
-          .container, .reference {
-            position: relative;
-            width: 100%;
-            height: 100%;
-          }
-
-          .reference {
-            z-index: -1;
-          }
-
-          .placeholder, canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: block;
-            width: 100%;
-            height: 100%;
-          }
-
-          .placeholder.hide {
-            display: none;
-          }
-
-          .placeholder svg {
-            margin: 25% 28%;
-            color: #000000;
-          }
-        </style>
-        <div class="container">
-          <div class="placeholder">
-            ${podcastSvg}
-          </div>
-        </div>
-      `;
+      this.#shadowDom.innerHTML = coverDom;
 
       this.#shadowDom.querySelector('.container').appendChild(this.#canvas);
 
@@ -265,6 +220,53 @@ const OctopodCoverElement = function (BaseElement, composite) {
     }
   };
 };
+
+const coverDom = `
+  <style type="text/css">
+    :host {
+      position: relative;
+      display: block;
+      overflow: hidden;
+      width: 360px;
+      background: #f1f3f4;
+    }
+
+    .container, .reference {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .reference {
+      z-index: -1;
+    }
+
+    .placeholder, canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .placeholder.hide {
+      display: none;
+    }
+
+    .placeholder svg {
+      margin: 25% 28%;
+      color: #000000;
+    }
+  </style>
+  <div class="container">
+    <div class="placeholder">
+      ${podcastSvg}
+    </div>
+  </div>
+`;
 
 customElements.define('octopod-cover', buildComposite([
   MediaDelegateElement,
