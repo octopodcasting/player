@@ -25,9 +25,9 @@ const MediaDelegateElement = function (BaseElement) {
         this.#destroyTargetPlayerListeners();
       }
 
-      if (player) {
-        this.#internalTargetPlayer = player;
+      this.#internalTargetPlayer = player;
 
+      if (player) {
         this.#initializeTargetPlayerListeners();
       }
     }

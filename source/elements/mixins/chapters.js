@@ -76,6 +76,7 @@ const ChaptersElement = function (BaseElement, composite) {
       }
 
       this.#internalChapters = data;
+      this.#currentChapterIndex = null;
 
       this.dispatchEvent(new CustomEvent('loadedchapters'));
     }

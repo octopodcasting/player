@@ -34,15 +34,15 @@ const MediaWrapperElement = function (BaseElement, composite) {
         this.#destroyMediaPlayerListeners();
       }
 
-      if (player) {
-        this.#internalPlayer = player;
+      this.#internalPlayer = player;
 
+      if (player) {
         this.#initializeMediaPlayerListeners();
       }
     }
 
     get src() {
-      return this.getAttribute('src') ?? null;
+      return this.#internalPlayer?.src ?? this.getAttribute('src') ?? null;
     }
 
     set src(src) {
