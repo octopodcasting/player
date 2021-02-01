@@ -1,4 +1,4 @@
-# <octopod-player>: The Podcast Embed element
+# &lt;octopod-player&gt;: The Podcast Embed element
 
 The `<octopod-player>` element is used to embed podcasts in HTML documents. It
 wraps around an [HTML Media element][mdn-htmlmediaelement] such as `<audio>` and

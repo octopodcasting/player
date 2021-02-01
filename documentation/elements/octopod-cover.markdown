@@ -1,4 +1,4 @@
-# <octopod-cover>: The Media Cover element
+# &lt;octopod-cover&gt;: The Media Cover element
 
 The `<octopod-cover>` element draws current chapter art while media is playing
 in the browser window.
@@ -9,7 +9,7 @@ and is going to show one of three things:
 - *A placeholder* when no image is specified and no current chapter information
   was found.
 - *The main image* specified inside the `image` attribute.
-- *A chapter image* specified in the chapter data fpr the current chapter.
+- *A chapter image* specified in the chapter data for the current chapter.
 
 ```html
 <octopod-cover
