@@ -3,6 +3,7 @@ import {mediaEvents} from '../../utilities/media';
 const MediaWrapperElement = function (BaseElement, composite) {
   return class extends BaseElement {
     #internalPlayer = null;
+    #externalPlayer = null;
 
     #mediaPlayerListener = null;
 
@@ -10,9 +11,9 @@ const MediaWrapperElement = function (BaseElement, composite) {
       super();
 
       composite.addConnectedCallback(() => {
-        if (!this.mediaPlayer) {
-          this.mediaPlayer = document.createElement('audio');
-          this.mediaPlayer.src = this.src;
+        if (!this.#externalPlayer) {
+          this.#initializeInternalPlayer();
+          this.#initializeMediaPlayerListeners();
         }
       });
 
@@ -26,23 +27,33 @@ const MediaWrapperElement = function (BaseElement, composite) {
     }
 
     get mediaPlayer() {
-      return this.#internalPlayer;
+      return this.#externalPlayer ?? this.#internalPlayer;
     }
 
     set mediaPlayer(player) {
-      if (this.#internalPlayer) {
+      if (this.mediaPlayer) {
         this.#destroyMediaPlayerListeners();
       }
 
-      this.#internalPlayer = player;
-
       if (player) {
-        this.#initializeMediaPlayerListeners();
+        this.#externalPlayer = player;
+
+        this.#destroyInternalPlayer();
+      } else {
+        this.#initializeInternalPlayer();
+
+        this.#externalPlayer = null;
       }
+
+      this.#initializeMediaPlayerListeners();
     }
 
     get src() {
-      return this.#internalPlayer?.src ?? this.getAttribute('src') ?? null;
+      if (this.#externalPlayer) {
+        return this.#externalPlayer.src;
+      }
+
+      return this.getAttribute('src') ?? null;
     }
 
     set src(src) {
@@ -99,15 +110,24 @@ const MediaWrapperElement = function (BaseElement, composite) {
       }
     }
 
+    #initializeInternalPlayer() {
+      this.#internalPlayer = document.createElement('audio');
+      this.#internalPlayer.src = this.src;
+    }
+
+    #destroyInternalPlayer() {
+      this.#internalPlayer = null;
+    }
+
     #initializeMediaPlayerListeners() {
       mediaEvents.forEach(eventName => {
-        this.#internalPlayer.addEventListener(eventName, this.#mediaPlayerListener);
+        this.mediaPlayer.addEventListener(eventName, this.#mediaPlayerListener);
       });
     }
 
     #destroyMediaPlayerListeners() {
       mediaEvents.forEach(eventName => {
-        this.#internalPlayer.removeEventListener(eventName, this.#mediaPlayerListener);
+        this.mediaPlayer.removeEventListener(eventName, this.#mediaPlayerListener);
       });
     }
 
