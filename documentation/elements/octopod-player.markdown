@@ -41,9 +41,8 @@ This element's attributes include the [global attributes][mdn-global-attributes]
 
 ## Properties
 
-This element inherits properties from its ancestors
-[HTMLElement][mdn-htmlelement], [Element][mdn-element], [Node][mdn-node] and
-[EventTarget][mdn-eventtarget].
+This element inherits properties from its ancestors [HTMLElement][mdn-htmlelement],
+[Element][mdn-element], [Node][mdn-node] and [EventTarget][mdn-eventtarget].
 
 This element acts as wrapper around an instance of [HTMLMediaElement][mdn-htmlmediaelement], 
 properties of the active media element can also be read and changed on this

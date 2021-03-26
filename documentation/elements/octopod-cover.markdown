@@ -48,9 +48,8 @@ This element's attributes include the [global attributes][mdn-global-attributes]
 
 ## Properties
 
-This element inherits properties from its ancestors
-[HTMLElement][mdn-htmlelement], [Element][mdn-element], [Node][mdn-node] and
-[EventTarget][mdn-eventtarget].
+This element inherits properties from its ancestors [HTMLElement][mdn-htmlelement],
+[Element][mdn-element], [Node][mdn-node] and [EventTarget][mdn-eventtarget].
 
 - `chapters` (read-only)  
   An array containing chapter information for the active media.
