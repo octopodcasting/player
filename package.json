@@ -1,6 +1,6 @@
 {
   "name": "@octopodcasting/player",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Web components optimized for playback of podcasts",
   "author": "Tim Goudriaan <tim@codedmonkey.com>",
   "license": "MIT",

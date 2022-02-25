@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2 (2021-01-10)
+
+Ditch GL.
+
+- Replace canvas for cover rendering with image elements (thanks to @curtgrimes).
+
 ## 0.2.1 (2021-01-10)
 
 Bug fix release.
