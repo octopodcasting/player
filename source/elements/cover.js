@@ -4,12 +4,9 @@ import {buildComposite} from '../utilities/composite';
 
 import podcastSvg from '../../assets/podcast.svg';
 
-const fadeInDurationMs = 350;
-
 const OctopodCoverElement = function (BaseElement, composite) {
   return class extends BaseElement {
-    #currentImageUrl = null;
-    #imageCache = {};
+    #activeSrc = null;
 
     #shadowDom = null;
 
@@ -31,13 +28,13 @@ const OctopodCoverElement = function (BaseElement, composite) {
 
       composite.addConnectedCallback(() => {
         this.#renderShadowDom();
-      });
 
-      composite.addAttributeChangedCallback('image', (oldValue, newValue) => {
-        this.#redraw();
-      });
+        composite.addAttributeChangedCallback('image', () => this.#redraw());
 
-      this.addEventListener('chapterupdate', this.#chapterUpdateListener);
+        this.addEventListener('chapterupdate', this.#chapterUpdateListener);
+
+        setTimeout(() => this.#redraw());
+      });
     }
 
     get imageUrl() {
@@ -48,79 +45,48 @@ const OctopodCoverElement = function (BaseElement, composite) {
       this.setAttribute('image', url);
     }
 
-    #loadImage(src) {
-      return new Promise(resolve => {
-        if (this.#imageCache[src]) {
-          resolve(this.#imageCache[src]);
-        }
-
-        const image = document.createElement('img');
-
-        image.addEventListener('load', () => {
-          this.#imageCache[src] = image;
-
-          if (this.#currentImageUrl === src) {
-            resolve(image);
-          } else {
-            resolve(null);
-          }
-        });
-
-        image.src = src;
-      });
-    }
-
-    #drawImage(src, force = false) {
-      if (!force && this.#currentImageUrl === src) {
+    #drawImage(src) {
+      if (this.#activeSrc === src) {
         return;
       }
 
-      this.#currentImageUrl = src;
+      this.#activeSrc = src;
 
-      this.#loadImage(src).then(image => {
-        if (image) {
-          this.#doDrawImage(image);
-        }
+      const containerElement = document.createElement('div');
+      containerElement.classList.add('cover');
+
+      const imageElement = document.createElement('img');
+      imageElement.src = src;
+
+      containerElement.appendChild(imageElement);
+
+      imageElement.addEventListener('load', () => {
+        const existingImages = [...this.#shadowDom.querySelectorAll('.images .cover')];
+
+        this.#shadowDom.querySelector('.images').appendChild(containerElement);
+
+        setTimeout(() => existingImages.forEach(existingImage => existingImage.remove()));
       });
     }
 
-    #doDrawImage(image) {
-      const imageElement = document.createElement("img");
-      imageElement.src = image.src;
-
-      const oldImagesToRemove = [
-        ...this.#shadowDom.querySelectorAll(".images img"),
-      ];
-
-      // Add new image
-      this.#shadowDom.querySelector(".images").appendChild(imageElement);
-
-      setTimeout(() => {
-        // Remove any images that aren't at the front
-        oldImagesToRemove.forEach((oldImage) => oldImage.remove());
-      }, fadeInDurationMs);
-    }
-
-    #redraw(force = false) {
+    #redraw() {
       const chapter = this.currentChapter;
 
       if (chapter && chapter.img) {
-        this.#drawImage(chapter.img, force);
+        this.#drawImage(chapter.img);
       } else if (this.imageUrl) {
-        this.#drawImage(this.imageUrl, force);
+        this.#drawImage(this.imageUrl);
       }
     }
 
     #renderShadowDom() {
       this.#shadowDom.innerHTML = coverDom;
-      this.#redraw();
     }
-
   };
 };
 
 const coverDom = `
-  <style type="text/css">
+  <style>
     :host {
       position: relative;
       display: block;
@@ -140,11 +106,8 @@ const coverDom = `
       position: relative;
       width: 100%;
       height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    
+
     .container .images:after {
       /* Keeps .images always in a square aspect ratio */
       content: "";
@@ -152,24 +115,22 @@ const coverDom = `
       padding-bottom: 100%;
     }
 
-    .container .images img {
+    .container .images .cover {
+      position: relative;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background: #f1f3f4;
+    }
+
+    .container .images .cover img {
       object-fit: contain;
       width: 100%;
       max-height: 100%;
-      position: absolute;
-      left: 0;
-      right: 0;
-      animation: fadeIn ${fadeInDurationMs}ms;
-    }
-
-    @keyframes fadeIn {
-      0% {
-        opacity: 0;
-      }
-
-      100% {
-        opacity: 1;
-      }
     }
 
     .placeholder {
