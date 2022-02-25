@@ -48,6 +48,8 @@ const ChaptersElement = function (BaseElement, composite) {
     #fetchChapters(url, type) {
       if (type && type !== 'application/json+chapters') {
         console.error(`Unknown chapters format: ${type}`);
+
+        return;
       }
 
       if (url === this.#currentChaptersUrl) {
