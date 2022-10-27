@@ -88,11 +88,15 @@ const OctopodCoverElement = function (BaseElement, composite) {
 const coverDom = `
   <style>
     :host {
+      --octopod-cover-size: 360px;
+
       position: relative;
       display: block;
-      overflow: hidden;
-      background: #f1f3f4;
+      width: var(--octopod-cover-size);
+      height: var(--octopod-cover-size);
       margin: 0 auto;
+      background: #f1f3f4;
+      overflow: hidden;
     }
 
     .container {
@@ -102,15 +106,19 @@ const coverDom = `
     }
 
     .container .images {
-      z-index: 2;
       position: relative;
       width: 100%;
       height: 100%;
+      z-index: 2;
     }
 
+    /* Keeps .images always in a square aspect ratio */
     .container .images:after {
-      /* Keeps .images always in a square aspect ratio */
       content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
       display: block;
       padding-bottom: 100%;
     }
@@ -128,23 +136,23 @@ const coverDom = `
     }
 
     .container .images .cover img {
-      object-fit: contain;
       width: 100%;
       max-height: 100%;
+      object-fit: contain;
     }
 
     .placeholder {
-      z-index: 1;
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      width: 100%;
-      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
     }
 
     .placeholder svg {
@@ -153,6 +161,7 @@ const coverDom = `
       color: #000000;
     }
   </style>
+
   <div class="container">
     <div class="images"></div>
     <div class="placeholder">

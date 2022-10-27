@@ -3,9 +3,9 @@ import ControlsElement from './mixins/controls';
 import MediaWrapperElement from './mixins/media-wrapper';
 import {buildComposite} from '../utilities/composite';
 
-import audioPlayerDom from './player/audio-player.html';
-import baseDom from './player/base.html';
-import coverPlayerDom from './player/cover-player.html';
+import audioPlayerDom from './dom/audio-player.html';
+import baseDom from './dom/player-base.html';
+import coverPlayerDom from './dom/cover-player.html';
 
 const OctopodPlayerElement = function (BaseElement, composite) {
   return class extends BaseElement {
@@ -84,8 +84,8 @@ const OctopodPlayerElement = function (BaseElement, composite) {
 
         this.#cover = document.createElement('octopod-cover');
         this.#cover.targetPlayer = this;
-        this.#cover.style.width = coverSize;
-        this.#cover.style.height = coverSize;
+
+        this.#cover.style.setProperty('--octopod-cover-size', coverSize);
       }
 
       coverContainer?.appendChild(this.#cover);

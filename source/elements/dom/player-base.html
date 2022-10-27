@@ -1,7 +1,9 @@
-<style type="text/css">
+<style>
   :host {
-    --spacing: calc(10px);
-    padding: var(--spacing);
+    --octopod-player-gap: 10px;
+
+    width: var(--octopod-player-width);
+    padding: var(--octopod-player-gap);
     border-radius: 10px;
     background: #f1f3f4;
     color: #000000;
@@ -68,10 +70,10 @@
   }
 
   .button.speed .option {
-    opacity: 0;
-    overflow: hidden;
     width: 0;
     padding: 0;
+    opacity: 0;
+    overflow: hidden;
   }
 
   .button.speed .option small {
@@ -79,13 +81,13 @@
   }
 
   .button.speed .option.active {
-    opacity: 1;
     width: 2.2em;
+    opacity: 1;
   }
 
   .button.speed:hover .option {
-    opacity: 1;
     width: 2.2em;
+    opacity: 1;
     background: #e5e7e8;
   }
 
@@ -108,9 +110,9 @@
   }
 
   .button.volume .progress {
-    opacity: 0;
     width: 0;
     margin-bottom: 0;
+    opacity: 0;
     transition: all .3s linear;
   }
 
@@ -131,10 +133,10 @@
   }
 
   .button.volume:hover .progress {
-    opacity: 1;
     width: 3.8em;
     margin-left: 1.1em;
     margin-right: .2em;
+    opacity: 1;
   }
 
   .control-button-group {
@@ -154,7 +156,7 @@
     display: flex;
     align-items: center;
     height: 12px;
-    margin-bottom: var(--spacing);
+    margin-bottom: var(--octopod-player-gap);
     cursor: pointer;
   }
 
@@ -186,8 +188,8 @@
     background: #000000;
     border-radius: 6px;
     box-shadow: rgba(134,134,134,0.5) 0 0 1px;
-    z-index: 3;
     transition: opacity .3s linear;
+    z-index: 3;
   }
 
   .progress:hover .progress-indicator {
