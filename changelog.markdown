@@ -2,7 +2,7 @@
 
 ## 0.2.3 (2022-10-28)
 
-Minor styling update
+Minor styling update.
 
 - Adds proper CSS variables.
 
