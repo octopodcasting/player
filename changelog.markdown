@@ -1,10 +1,16 @@
 # Changelog
 
+## 0.2.3 (2022-10-28)
+
+Minor styling update
+
+- Adds proper CSS variables.
+
 ## 0.2.2 (2022-02-25)
 
 Ditch GL.
 
-- Replace canvas for cover rendering with image elements (thanks to @curtgrimes).
+- Replaces canvas for cover rendering with image elements (thanks to @curtgrimes).
 
 ## 0.2.1 (2021-01-10)
 
