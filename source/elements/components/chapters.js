@@ -30,7 +30,11 @@ const ChaptersElement = function (BaseElement, composite) {
     }
 
     set chaptersUrl(url) {
-      this.setAttribute('chapters', url);
+      if (!url) {
+        this.removeAttribute('chapters');
+      } else {
+        this.setAttribute('chapters', url);
+      }
     }
 
     get chapters() {
@@ -58,16 +62,17 @@ const ChaptersElement = function (BaseElement, composite) {
 
       this.#currentChaptersUrl = url;
 
-      if (this.#fetching) {
-        this.#abortController.abort();
-      }
+      this.#loadChapters(null);
 
       this.#fetching = true;
 
       fetch(url, {signal: this.#abortController.signal})
         .then(response => response.json())
-        .then(data => this.#loadChapters(data.chapters))
-      ;
+        .then(data => {
+          this.#fetching = false;
+
+          this.#loadChapters(data.chapters);
+        });
     }
 
     #loadChapters(data) {
@@ -81,6 +86,7 @@ const ChaptersElement = function (BaseElement, composite) {
       this.#currentChapterIndex = null;
 
       this.dispatchEvent(new CustomEvent('loadedchapters'));
+      this.dispatchEvent(new CustomEvent('chapterupdate'));
     }
 
     #timeUpdateCallback() {

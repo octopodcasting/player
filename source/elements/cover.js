@@ -1,8 +1,9 @@
-import ChaptersElement from './mixins/chapters';
-import MediaDelegateElement from './mixins/media-delegate';
+import ChaptersElement from './components/chapters';
+import MediaDelegateElement from './components/media-delegate';
 import {buildComposite} from '../utilities/composite';
+import {render} from '../utilities/template';
 
-import podcastSvg from '../../assets/podcast.svg';
+import coverDom from './dom/cover.html';
 
 const OctopodCoverElement = function (BaseElement, composite) {
   return class extends BaseElement {
@@ -42,7 +43,11 @@ const OctopodCoverElement = function (BaseElement, composite) {
     }
 
     set imageUrl(url) {
-      this.setAttribute('image', url);
+      if (!url) {
+        this.removeAttribute('image');
+      } else {
+        this.setAttribute('image', url);
+      }
     }
 
     #drawImage(src) {
@@ -51,6 +56,14 @@ const OctopodCoverElement = function (BaseElement, composite) {
       }
 
       this.#activeSrc = src;
+
+      if (!src) {
+        const existingImages = [...this.#shadowDom.querySelectorAll('.images .cover')];
+
+        setTimeout(() => existingImages.forEach(existingImage => existingImage.remove()));
+
+        return;
+      }
 
       const containerElement = document.createElement('div');
       containerElement.classList.add('cover');
@@ -76,99 +89,16 @@ const OctopodCoverElement = function (BaseElement, composite) {
         this.#drawImage(chapter.img);
       } else if (this.imageUrl) {
         this.#drawImage(this.imageUrl);
+      } else {
+        this.#drawImage(null);
       }
     }
 
     #renderShadowDom() {
-      this.#shadowDom.innerHTML = coverDom;
+      this.#shadowDom.innerHTML = render(coverDom);
     }
   };
 };
-
-const coverDom = `
-  <style>
-    :host {
-      --octopod-cover-size: 360px;
-
-      position: relative;
-      display: block;
-      width: var(--octopod-cover-size);
-      height: var(--octopod-cover-size);
-      margin: 0 auto;
-      background: #f1f3f4;
-      overflow: hidden;
-    }
-
-    .container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-
-    .container .images {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-    }
-
-    /* Keeps .images always in a square aspect ratio */
-    .container .images:after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      display: block;
-      padding-bottom: 100%;
-    }
-
-    .container .images .cover {
-      position: relative;
-      left: 0;
-      right: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      background: #f1f3f4;
-    }
-
-    .container .images .cover img {
-      width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-
-    .placeholder {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
-
-    .placeholder svg {
-      width: 50%;
-      height: 50%;
-      color: #000000;
-    }
-  </style>
-
-  <div class="container">
-    <div class="images"></div>
-    <div class="placeholder">
-      ${podcastSvg}
-    </div>
-  </div>
-`;
 
 customElements.define('octopod-cover', buildComposite([
   MediaDelegateElement,

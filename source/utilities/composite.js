@@ -1,4 +1,4 @@
-import CompositeElement from '../elements/mixins/composite';
+import CompositeElement from '../elements/components/composite';
 
 export function buildComposite(mixins) {
   const helper = new CompositeHelper();
@@ -8,6 +8,7 @@ export function buildComposite(mixins) {
 }
 
 class CompositeHelper {
+
   adoptedCallbacks = [];
   attributeChangedCallbacks = {};
   connectedCallbacks = [];

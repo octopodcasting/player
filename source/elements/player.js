@@ -1,11 +1,11 @@
-import ChaptersElement from './mixins/chapters';
-import ControlsElement from './mixins/controls';
-import MediaWrapperElement from './mixins/media-wrapper';
+import ChaptersElement from './components/chapters';
+import ControlsElement from './components/controls';
+import MediaWrapperElement from './components/media-wrapper';
 import {buildComposite} from '../utilities/composite';
 
 import audioPlayerDom from './dom/audio-player.html';
-import baseDom from './dom/player-base.html';
 import coverPlayerDom from './dom/cover-player.html';
+import playerDom from './dom/player.html';
 
 const OctopodPlayerElement = function (BaseElement, composite) {
   return class extends BaseElement {
@@ -55,7 +55,11 @@ const OctopodPlayerElement = function (BaseElement, composite) {
     }
 
     set mode(mode) {
-      return this.setAttribute('mode', mode);
+      if (!mode) {
+        this.removeAttribute('mode');
+      } else {
+        this.setAttribute('mode', mode);
+      }
     }
 
     get imageUrl() {
@@ -63,11 +67,15 @@ const OctopodPlayerElement = function (BaseElement, composite) {
     }
 
     set imageUrl(url) {
-      this.setAttribute('image', url);
+      if (!url) {
+        this.removeAttribute('image');
+      } else {
+        this.setAttribute('image', url);
+      }
     }
 
     #renderShadowDom() {
-      this.#shadowDom.innerHTML = baseDom;
+      this.#shadowDom.innerHTML = playerDom;
 
       if (this.mode === 'cover') {
         this.#shadowDom.innerHTML += coverPlayerDom;
