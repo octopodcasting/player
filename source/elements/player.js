@@ -3,9 +3,9 @@ import ControlsElement from './components/controls';
 import MediaWrapperElement from './components/media-wrapper';
 import {buildComposite} from '../utilities/composite';
 
-import audioPlayerDom from './dom/audio-player.html';
-import coverPlayerDom from './dom/cover-player.html';
-import playerDom from './dom/player.html';
+import audioPlayerDom from './dom/player-audio.html';
+import basePlayerDom from './dom/player-base.html';
+import coverPlayerDom from './dom/player-cover.html';
 
 const OctopodPlayerElement = function (BaseElement, composite) {
   return class extends BaseElement {
@@ -75,28 +75,23 @@ const OctopodPlayerElement = function (BaseElement, composite) {
     }
 
     #renderShadowDom() {
-      this.#shadowDom.innerHTML = playerDom;
+      const select = this.#shadowDom.querySelector.bind(this.#shadowDom);
+
+      this.#shadowDom.innerHTML = basePlayerDom;
 
       if (this.mode === 'cover') {
         this.#shadowDom.innerHTML += coverPlayerDom;
+
+        if (!this.#cover) {
+          this.#cover = document.createElement('octopod-cover');
+          this.#cover.setAttribute('slot', 'cover');
+          this.#cover.targetPlayer = this;
+
+          this.appendChild(this.#cover);
+        }
       } else {
         this.#shadowDom.innerHTML += audioPlayerDom;
       }
-
-      const select = this.#shadowDom.querySelector.bind(this.#shadowDom);
-
-      const coverContainer = select('.cover');
-
-      if (!this.#cover) {
-        const coverSize = coverContainer ? window.getComputedStyle(coverContainer).width : 0;
-
-        this.#cover = document.createElement('octopod-cover');
-        this.#cover.targetPlayer = this;
-
-        this.#cover.style.setProperty('--octopod-cover-size', coverSize);
-      }
-
-      coverContainer?.appendChild(this.#cover);
 
       let controlsContainer = select('[data-controls]');
 
