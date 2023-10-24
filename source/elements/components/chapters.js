@@ -15,11 +15,7 @@ const ChaptersElement = function (BaseElement, composite) {
       this.#timeUpdateListener = this.#timeUpdateCallback.bind(this);
 
       composite.addAttributeChangedCallback('chapters', (oldValue, newValue) => {
-        if (!newValue) {
-          this.#loadChapters(null);
-        } else {
-          this.#fetchChapters(newValue);
-        }
+        this.#fetchChapters(newValue);
       });
 
       this.addEventListener('timeupdate', this.#timeUpdateListener);
@@ -50,6 +46,13 @@ const ChaptersElement = function (BaseElement, composite) {
     }
 
     #fetchChapters(url, type) {
+      if (!url) {
+        this.#currentChaptersUrl = null;
+        this.#loadChapters(null);
+
+        return;
+      }
+
       if (type && type !== 'application/json+chapters') {
         console.error(`Unknown chapters format: ${type}`);
 
@@ -61,7 +64,6 @@ const ChaptersElement = function (BaseElement, composite) {
       }
 
       this.#currentChaptersUrl = url;
-
       this.#loadChapters(null);
 
       this.#fetching = true;

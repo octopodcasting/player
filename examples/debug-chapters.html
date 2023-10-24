@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Octopod Player Debug Examples: Chapters</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    >
+
+    <script src="../distribution/octopod-player.js" async></script>
+  </head>
+  <body>
+    <div class="d-flex flex-column align-items-center justify-content-center gap-3 py-5 border-bottom">
+      <octopod-player
+        id="cover-player"
+        src="https://mp3s.nashownotes.com/PC20-07-2020-10-16-Final.mp3"
+        image="https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg"
+        chapters="chapters.json"
+        mode="cover"
+      ></octopod-player>
+
+      <div>
+        <button id="cover-disable" class="btn btn-secondary">Disable Chapters</button>
+        <button id="cover-reset" class="btn btn-primary">Set Original Chapters</button>
+        <button id="cover-change" class="btn btn-primary">Set Alternative Chapters</button>
+      </div>
+
+      <script>
+        const coverPlayer = document.querySelector('#cover-player');
+        const coverChangeButton = document.querySelector('#cover-change');
+        const coverDisableButton = document.querySelector('#cover-disable');
+        const coverResetButton = document.querySelector('#cover-reset');
+
+        coverChangeButton.addEventListener('click', () => {
+          coverPlayer.chaptersUrl = 'chapters-alt.json';
+        });
+
+        coverDisableButton.addEventListener('click', () => {
+          coverPlayer.chaptersUrl = null;
+        });
+
+        coverResetButton.addEventListener('click', () => {
+          coverPlayer.chaptersUrl = 'chapters.json';
+        });
+      </script>
+    </div>
+  </body>
+</html>
