@@ -1,4 +1,5 @@
 const CompositeElement = function (BaseElement, composite) {
+
   return class extends BaseElement {
     connectedCallback() {
       composite.connectedCallbacks.forEach(callback => callback());

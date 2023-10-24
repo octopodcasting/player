@@ -13,13 +13,13 @@ and is going to show one of three things:
 
 ```html
 <octopod-cover
-  target="podcasting2_0Player"
+  target="podcasting20-player"
   image="https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg"
   chapters="https://studio.hypercatcher.com/chapters/podcast/http:mp3s.nashownotes.compc20rss.xml/episode/http:adam.curry.comhtmlPC201020201106Podcas-ZV7ms5XRW9t58ntbVrTRT4WJdFKD2p.html"
 ></octopod-cover>
 
 <audio
-  id="podcasting2_0Player"
+  id="podcasting20-player"
   src="https://mp3s.nashownotes.com/PC20-10-2020-11-06-Final.mp3"
   controls
 >

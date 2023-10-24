@@ -1,10 +1,10 @@
-import CompositeElement from '../elements/mixins/composite';
+import CompositeElement from '../elements/components/composite';
 
-export function buildComposite(mixins) {
+export function buildComposite(components) {
   const helper = new CompositeHelper();
   const baseComposite = CompositeElement(HTMLElement, helper);
 
-  return [baseComposite, ...mixins].reduce((composite, wrapper) => wrapper(composite, helper));
+  return [baseComposite, ...components].reduce((composite, wrapper) => wrapper(composite, helper));
 }
 
 class CompositeHelper {
