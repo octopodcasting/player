@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 (2023-10-24)
+
+Composite system rework.
+
+- Fixes reloading of chapters when using the same URL a second time.
+- The player element no longer creates a cover element if the mode is set to `audio`.
+- Adds extra CSS variables for use in the cover element.
+
 ## 0.2.3 (2022-10-28)
 
 Minor styling update.
