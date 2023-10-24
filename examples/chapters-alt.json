@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0",
+  "chapters":
+  [
+    {
+      "startTime": 0,
+      "title": "Intro"
+    },
+    {
+      "startTime": 410,
+      "title": "Namespace",
+      "img": "https://www.dudenamedben.blog/wp-content/uploads/2022/10/noagendashow.png",
+      "url": "https://github.com/Podcastindex-org/podcast-namespace"
+    },
+    {
+      "startTime": 3990,
+      "title": "Just Break Up",
+      "img": "https://www.dudenamedben.blog/wp-content/uploads/2022/10/octopod.png",
+      "url": "https://twitter.com/justbreakuppod"
+    },
+    {
+      "startTime": 6089,
+      "title": "Outro"
+    }
+  ]
+}

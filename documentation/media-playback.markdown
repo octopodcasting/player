@@ -15,7 +15,7 @@ element inside the `player` attribute or set the `mediaPlayer` property:
 
 ```js
 const audioPlayer = document.createElement('audio');
-audioPlayer.src = /* your media file */;
+audioPlayer.src = 'your-media-file.mp3';
 
 const octopodPlayer = document.createElement('octopod-player');
 octopodPlayer.mediaPlayer = audioPlayer;
